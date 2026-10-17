@@ -1,122 +1,104 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+
+import { useState } from "react";
+
+import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
+
+import AdminDashboard from "./features/admin/AdminDashboard";
+import StudentsPage from "./features/admin/students/StudentsPage";
+import RoomsPage from "./features/admin/rooms/RoomsPage";
+import ComplaintsPage from "./features/admin/complaints/ComplaintsPage";
+import MessMenuPage from "./features/admin/mess/MessMenuPage";
+import AnnouncementsPage from "./features/admin/announcements/AnnouncementsPage";
+import BrokenPropertyPage from "./features/admin/property/BrokenPropertyPage";
+
+import StudentDashboard from "./features/dashboard/StudentDashboard";
+import ComplaintBox from "./features/student/complaints/ComplaintBox";
+import StudentMessPage from "./features/student/mess/StudentMessPage";
+import StudentNotices from "./features/student/notices/StudentNotices";
+import ImportantContacts from "./features/student/contacts/ImportantContacts";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [role, setRole] = useState("student");
+  const [activePage, setActivePage] = useState("Dashboard");
+
+  const handleRoleChange = (newRole) => {
+    setRole(newRole);
+    setActivePage(newRole === "admin" ? "Overview" : "Dashboard");
+  };
+
+  const handleNavigate = (page) => {
+    setActivePage(page);
+  };
+
+  const renderPage = () => {
+    if (role === "admin") {
+      switch (activePage) {
+        case "Overview":
+          return <AdminDashboard />;
+        case "Students":
+          return <StudentsPage />;
+        case "Rooms":
+          return <RoomsPage />;
+        case "Complaints":
+          return <ComplaintsPage />;
+        case "Mess Menu":
+          return <MessMenuPage />;
+        case "Announcements":
+          return <AnnouncementsPage />;
+        case "Broken Property":
+          return <BrokenPropertyPage />;
+        default:
+          return <AdminDashboard />;
+      }
+    }
+
+    switch (activePage) {
+      case "Dashboard":
+        return <StudentDashboard onNavigate={handleNavigate} />;
+      case "My Room":
+        return <StudentDashboard onNavigate={handleNavigate} />;
+      case "Complaint Box":
+        return <ComplaintBox />;
+      case "Mess Menu":
+        return <StudentMessPage />;
+      case "Notices":
+        return <StudentNotices />;
+      case "Important Contacts":
+        return <ImportantContacts />;
+      default:
+        return <StudentDashboard onNavigate={handleNavigate} />;
+    }
+  };
+
+  const pageTitle =
+    activePage === "Overview" ? "Overview" : activePage;
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="min-h-screen bg-zinc-100 md:flex">
+      <Sidebar
+        role={role}
+        activePage={activePage}
+        onNavigate={handleNavigate}
+      />
 
-      <div className="ticks"></div>
+      <div className="min-w-0 flex-1">
+        <Navbar
+          role={role}
+          page={pageTitle}
+          userName={role === "admin" ? "Hostel Admin" : "Aarav Sharma"}
+          onRoleChange={handleRoleChange}
+        />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <main className="p-4 sm:p-6 lg:p-8">
+          <div className="mx-auto max-w-7xl">
+            {renderPage()}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
