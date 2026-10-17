@@ -6,3 +6,5 @@ export default defineConfig({
   base: "/hostelhub/",
   plugins: [react(), tailwindcss()],
 });
+
+

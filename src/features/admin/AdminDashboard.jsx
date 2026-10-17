@@ -49,7 +49,7 @@ function AdminDashboard() {
             HOSTEL OPERATIONS
           </p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">
-            Hostel Pulse
+            HostelHub
           </h1>
           <p className="mt-2 text-sm text-zinc-500">
             A quick overview of what's happening across your hostel.
